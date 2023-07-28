@@ -1,0 +1,11 @@
+{
+    "prefix": "akio ",
+    "dev.id": "962393458583146496",
+    "emojis": {
+        "right": "<:uright:886674467428892672>",
+        "wrong": "<:uwrong:886674267595477072>"
+    },
+    "embedsDefaultColor": "#B0CBFF",
+    "embedsErrorColor": "#ff8097",
+    "embedsSucessColor": "#b0f2c2"
+}
