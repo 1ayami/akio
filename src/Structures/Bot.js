@@ -7,7 +7,7 @@ const {
 	Routes,
 	EmbedBuilder,
 } = require('discord.js')
-const { readdirSync } = require('fs')
+const { readdirSync, existsSync } = require('fs')
 const axios = require('axios')
 const Vibrant = require('node-vibrant')
 
@@ -48,6 +48,7 @@ class AKIO extends Client {
 		super(options)
 
 		this.commands = new Collection()
+		this.slashes = 0
 		this.config = require('../../Utils/config.json')
 	}
 
@@ -70,13 +71,19 @@ class AKIO extends Client {
 	loadCommands() {
 		this.commands.clear()
 
-		const DirCommands = readdirSync('./src/Commands')
+		const DirCommands = readdirSync('./src/Commands').filter(
+			(c) => c !== 'Developer'
+		)
 
 		if (DirCommands) {
 			for (const category of DirCommands) {
-				const Commands = readdirSync(`./src/Commands/${category}`).filter((f) =>
-					f.endsWith('.js')
+				const Commands = readdirSync(`./src/Commands/${category}`).filter(
+					(f) => f.endsWith('.js') && f !== '_Base.js'
 				)
+
+				const Base = require(`../Commands/${category}/_Base.js`)
+
+				slashCmds.push(Base)
 
 				for (const cmd of Commands) {
 					delete require.cache[
@@ -93,15 +100,13 @@ class AKIO extends Client {
 
 					this.commands.set(command.name, command)
 
-					if ('slash_command' in command && command.slash_command.name) {
-						slashCmds.push(command.slash_command)
-					} else if (
-						'slash_command' in command &&
-						!command.slash_command?.name
-					) {
+					if (command.slash_command?.name) {
+						this.slashes++
+					} else {
 						console.log(
 							`❌ El slash command en el archivo ${cmd} no tiene un nombre`
 						)
+						return
 					}
 				}
 			}
@@ -117,7 +122,7 @@ class AKIO extends Client {
 			body: slashCmds,
 		})
 
-		console.log(`🔮 ${slashCmds.length} SlashCommands cargados`)
+		console.log(`🔮 ${this.slashes} SlashCommands cargados`)
 	}
 
 	createSimpleEmbed({ color, description } = {}) {

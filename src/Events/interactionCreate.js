@@ -315,9 +315,9 @@ module.exports = {
 		}
 
 		if (int.isChatInputCommand()) {
-			const cmd = bot.commands.get(int.commandName)
+			const name = int.options.getSubcommand()
 
-			if (!cmd) return
+			const cmd = bot.commands.get(name)
 
 			if (cmd.owner_only || cmd.category == 'DEVELOPER') {
 				if (int.user.id !== bot.config['dev.id']) {

@@ -71,6 +71,7 @@ module.exports = {
 	},
 	slash_command: {
 		name: 'suggest',
+		type: 1,
 		description: 'Realiza una sugerencia para mejorar el servidor',
 		options: [
 			{

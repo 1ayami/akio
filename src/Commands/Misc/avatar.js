@@ -34,9 +34,7 @@ module.exports = {
 			 */
 			const member = msg.mentions.members.first() || args[0] || msg.member
 
-			const avatarEmbed = new EmbedBuilder().setColor(
-				bot.config.embedsErrorColor
-			)
+			const avatarEmbed = new EmbedBuilder()
 
 			const userIDRegex = new RegExp(/^([0-9]{17,20})$/)
 
@@ -78,6 +76,11 @@ module.exports = {
 				avatarEmbed
 					.setTitle(`☂ Avatar de ${userData.data.data.username}`)
 					.setImage(userPFP)
+					.setColor(
+						await bot.getVibrantColor(
+							`https://cdn.discordapp.com/avatars/${member}/${avatarHash}.jpg?size=4096`
+						)
+					)
 
 				const avatarButton = new ButtonBuilder()
 					.setURL(userPFP)
@@ -94,6 +97,11 @@ module.exports = {
 			avatarEmbed
 				.setTitle(`☂ Avatar de ${member.user.username}`)
 				.setImage(member.user.displayAvatarURL({ size: 4096 }))
+				.setColor(
+					await bot.getVibrantColor(
+						member.user.displayAvatarURL({ size: 4096, extension: 'jpg' })
+					)
+				)
 
 			const avatarButton = new ButtonBuilder()
 				.setURL(member.user.displayAvatarURL({ size: 4096 }))
@@ -107,6 +115,7 @@ module.exports = {
 	},
 	slash_command: {
 		name: 'avatar',
+		type: 1,
 		description: 'Muestra tu avatar o el de otro usuario',
 		options: [
 			{
@@ -128,16 +137,14 @@ module.exports = {
 		 */
 		async exe(bot, int) {
 			/**
-			 * @type { User | string}
+			 * @type { GuildMember | string}
 			 */
 			const member =
 				int.options.getMember('miembro') ||
 				int.options.getString('id') ||
 				int.member
 
-			const avatarEmbed = new EmbedBuilder().setColor(
-				bot.config.embedsErrorColor
-			)
+			const avatarEmbed = new EmbedBuilder()
 
 			const userIDRegex = new RegExp(/^([0-9]{17,20})$/)
 
@@ -179,6 +186,11 @@ module.exports = {
 				avatarEmbed
 					.setTitle(`☂ Avatar de ${userData.data.data.username}`)
 					.setImage(userPFP)
+					.setColor(
+						await bot.getVibrantColor(
+							`https://cdn.discordapp.com/avatars/${member}/${avatarHash}.jpg?size=4096`
+						)
+					)
 
 				const avatarButton = new ButtonBuilder()
 					.setURL(userPFP)
@@ -194,6 +206,11 @@ module.exports = {
 			avatarEmbed
 				.setTitle(`☂ Avatar de ${member.user.username}`)
 				.setImage(member.user.displayAvatarURL({ size: 4096 }))
+				.setColor(
+					await bot.getVibrantColor(
+						member.user.displayAvatarURL({ size: 4096, extension: 'jpg' })
+					)
+				)
 
 			const avatarButton = new ButtonBuilder()
 				.setURL(member.user.displayAvatarURL({ size: 4096 }))
