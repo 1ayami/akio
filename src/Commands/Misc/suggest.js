@@ -3,11 +3,12 @@ const {
 	Message,
 	ChatInputCommandInteraction,
 	EmbedBuilder,
+	ApplicationCommandOptionType,
 } = require('discord.js')
 
 module.exports = {
 	name: 'suggest',
-	category: 'MISCELANEO',
+	category: 'MISC',
 	description: 'Realiza una sugerencia para mejorar el servidor',
 	bot_permises: ['ViewChannel', 'SendMessages'],
 	user_permises: [],
@@ -75,7 +76,7 @@ module.exports = {
 		description: 'Realiza una sugerencia para mejorar el servidor',
 		options: [
 			{
-				type: 3,
+				type: ApplicationCommandOptionType.String,
 				name: 'sugerencia',
 				description: 'Tu sugerencia',
 				required: true,

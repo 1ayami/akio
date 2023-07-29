@@ -9,8 +9,8 @@ module.exports = {
 	name: 'ban',
 	category: 'MODERATION',
 	description: 'Banea a un miembro del servidor',
-	bot_permises: ['ViewChannel', 'SendMessages'],
-	user_permises: ['ManageGuild', 'BanMembers'],
+	bot_permises: ['ViewChannel', 'SendMessages', 'BanMembers'],
+	user_permises: ['BanMembers'],
 
 	prefix_command: {
 		aliases: ['b'],
@@ -24,6 +24,7 @@ module.exports = {
 		async exe(bot, msg, args) {
 			const member =
 				msg.mentions.members.first() || msg.guild.members.cache.get(args[0])
+			const reason = args.slice(1).join(' ') || 'No se especificó una razón'
 
 			if (!member) {
 				msg.reply({
@@ -49,7 +50,19 @@ module.exports = {
 				return
 			}
 
-			await member.ban()
+			if (!member.bannable) {
+				msg.reply({
+					embeds: [
+						bot.createSimpleEmbed({
+							color: bot.config.embedsErrorColor,
+							description: `${bot.config.emojis.wrong} No puedes banear a este usuario`,
+						}),
+					],
+				})
+				return
+			}
+
+			await member.ban({ reason: reason })
 			msg.reply({
 				embeds: [
 					bot.createSimpleEmbed({
@@ -71,6 +84,11 @@ module.exports = {
 				description: 'Miembro que se va a banear',
 				required: true,
 			},
+			{
+				type: ApplicationCommandOptionType.String,
+				name: 'razón',
+				description: 'Razón del baneo',
+			},
 		],
 
 		/**
@@ -80,6 +98,8 @@ module.exports = {
 		 */
 		async exe(bot, int) {
 			const member = int.options.getMember('member')
+			const reason =
+				int.options.getString('razón') || 'No se especificó una razón'
 
 			if (int.user.id == member.user.id) {
 				int.reply({
@@ -93,7 +113,7 @@ module.exports = {
 				return
 			}
 
-			await member.ban()
+			await member.ban({ reason: reason })
 
 			int.reply({
 				embeds: [
