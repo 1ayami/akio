@@ -104,13 +104,13 @@ module.exports = {
 					fields: [
 						{
 							name: `> Permiso(s) necesarios`,
-							value: `\`${perms_req.join(' | ')}\``,
+							value: `\`\`\`${perms_req.join(' | ')}\`\`\``,
 						},
 					],
 				}).setColor(bot.config.embedsErrorColor)
 
 				message.reply({
-					content: `${bot.config.emojis.wrong} No tienes los permisos necesarios para realizar esta acción`,
+					content: `${bot.config.emojis.wrong} No tienes suficientes permisos`,
 					embeds: [no_perms_embed],
 				})
 				return
