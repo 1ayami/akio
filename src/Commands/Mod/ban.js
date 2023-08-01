@@ -62,6 +62,8 @@ module.exports = {
 				return
 			}
 
+			member.timeout()
+
 			await member.ban({ reason: reason })
 			msg.reply({
 				embeds: [

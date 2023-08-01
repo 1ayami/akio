@@ -58,7 +58,7 @@ module.exports = {
 				embeds: [
 					bot.createSimpleEmbed({
 						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario ${bannedUser.user.username} ha sido desbaneado`,
+						description: `${bot.config.emojis.right} El usuario **${bannedUser.user.username}** ha sido desbaneado`,
 					}),
 				],
 			})
@@ -105,6 +105,8 @@ module.exports = {
 				return
 			}
 
+			await int.guild.bans.fetch()
+
 			const bannedUser = int.guild.bans.cache.get(userId)
 
 			if (!bannedUser) {
@@ -119,12 +121,12 @@ module.exports = {
 				return
 			}
 
-			await int.guild.members.unban(bannedUser)
+			await int.guild.members.unban(bannedUser.user, { reason: reason })
 			int.reply({
 				embeds: [
 					bot.createSimpleEmbed({
 						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario ${bannedUser.user.username} ha sido desbaneado`,
+						description: `${bot.config.emojis.right} El usuario **${bannedUser.user.username}** ha sido desbaneado`,
 					}),
 				],
 			})
