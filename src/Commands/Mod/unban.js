@@ -11,6 +11,7 @@ module.exports = {
 	description: 'Desbanea a un usuario',
 	bot_permises: ['ViewChannel', 'SendMessages', 'BanMembers'],
 	user_permises: ['BanMembers'],
+	usage: '<usuario> [razón]',
 
 	prefix_command: {
 		aliases: [],
@@ -22,6 +23,8 @@ module.exports = {
 		 * @param { string[] } args
 		 */
 		async exe(bot, msg, args) {
+			await msg.guild.bans.fetch()
+
 			const userId = args[0]
 			const reason = args.slice(1).join(' ') || 'No se especificó una razón'
 

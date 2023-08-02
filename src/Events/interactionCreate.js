@@ -319,7 +319,7 @@ module.exports = {
 
 			const cmd = bot.commands.get(name)
 
-			if (cmd.owner_only || cmd.category == 'DEVELOPER') {
+			if (cmd.category && cmd.category == 'DEVELOPER') {
 				if (int.user.id !== bot.config['dev.id']) {
 					int.reply({
 						embeds: [

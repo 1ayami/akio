@@ -8,7 +8,7 @@ const {
 	ButtonStyle,
 	GuildMember,
 	User,
-	ApplicationCommandOptionType
+	ApplicationCommandOptionType,
 } = require('discord.js')
 const axios = require('axios')
 
@@ -18,7 +18,7 @@ module.exports = {
 	description: 'Muestra tu avatar o el de otro usuario',
 	bot_permises: ['ViewChannel', 'SendMessages'],
 	user_permises: [],
-	owner_only: true,
+	usage: '[usuario]',
 
 	prefix_command: {
 		aliases: ['pfp', 'avt'],

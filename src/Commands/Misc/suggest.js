@@ -12,6 +12,7 @@ module.exports = {
 	description: 'Realiza una sugerencia para mejorar el servidor',
 	bot_permises: ['ViewChannel', 'SendMessages'],
 	user_permises: [],
+	usage: '<sugerencia>',
 
 	prefix_command: {
 		aliases: ['sug', 'sugerir'],

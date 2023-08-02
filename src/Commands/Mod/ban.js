@@ -11,6 +11,7 @@ module.exports = {
 	description: 'Banea a un miembro del servidor',
 	bot_permises: ['ViewChannel', 'SendMessages', 'BanMembers'],
 	user_permises: ['BanMembers'],
+	usage: '<usuario> [razón]',
 
 	prefix_command: {
 		aliases: ['b'],
@@ -69,7 +70,16 @@ module.exports = {
 				embeds: [
 					bot.createSimpleEmbed({
 						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario **${member.user.username}** ha sido baneado correctamente`,
+						description: `${bot.config.emojis.right} El usuario **${member.user.username}** ha sido baneado correctamente\nRazón: \`\`\`${reason}\`\`\``,
+					}),
+				],
+			})
+
+			member.user.send({
+				embeds: [
+					bot.createSimpleEmbed({
+						color: bot.config.embedsSucessColor,
+						description: `${bot.config.emojis.right} Has sido baneado del servidor **${msg.guild.name}**\nRazón: \`\`\`${reason}\`\`\``,
 					}),
 				],
 			})
@@ -122,6 +132,15 @@ module.exports = {
 					bot.createSimpleEmbed({
 						color: bot.config.embedsSucessColor,
 						description: `${bot.config.emojis.right} El usuario **${member.user.username}** ha sido baneado correctamente`,
+					}),
+				],
+			})
+
+			member.user.send({
+				embeds: [
+					bot.createSimpleEmbed({
+						color: bot.config.embedsSucessColor,
+						description: `${bot.config.emojis.right} Has sido baneado del servidor **${int.guild.name}**\nRazón: \`\`\`${reason}\`\`\``,
 					}),
 				],
 			})
