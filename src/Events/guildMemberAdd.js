@@ -11,7 +11,7 @@ module.exports = {
 	 */
 	exe(bot, member) {
 		const embedWLC = new EmbedBuilder()
-			.setColor(bot.config.embedsDefaultColor)
+			.setColor(bot.config.colors.normal)
 			.setThumbnail(member.user.displayAvatarURL({ size: 4096 }))
 			.setAuthor({ name: 'Genesis', iconURL: member.guild.iconURL() })
 			.setTitle(`> Un nuevo usuario ha ingresado <:ztar:902305429474934824>!`)

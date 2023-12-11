@@ -36,26 +36,18 @@ module.exports = {
 
 			const cmd_result = commands_name.sort((a, b) => a.distance - b.distance)
 
-			message.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsErrorColor,
-						description: `${bot.config.emojis.wrong} No he podido encontrar ese comando, tal vez quisiste decir: \`${prefix}${cmd_result[0].name}\``,
-					}),
-				],
+			bot.errorEmbed({
+				desc: `No he podido encontrar ese comando\n\n> Tal vez quisiste decir: \`${prefix}${cmd_result[0].name}\``,
+				target: message,
 			})
 			return
 		}
 
 		if (cmd.category && cmd.category == 'DEVELOPER') {
 			if (message.author.id !== bot.config['dev.id']) {
-				message.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Este comando puede ser usado solo por el dueño del bot`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Este comando puede ser usado solo por el dueño del bot',
+					target: message,
 				})
 				return
 			}
@@ -72,18 +64,10 @@ module.exports = {
 			}
 
 			if (perms_req.length) {
-				let no_perms_embed = new EmbedBuilder({
-					fields: [
-						{
-							name: `> Permiso(s) necesarios`,
-							value: `\`${perms_req.join(' | ')}\``,
-						},
-					],
-				}).setColor(bot.config.embedsErrorColor)
-
-				message.reply({
-					content: `${bot.config.emojis.wrong} El bot no tiene los permisos necesarios para realizar esta acción`,
-					embeds: [no_perms_embed],
+				bot.noPermsEmbed({
+					perms: perms_req,
+					target: message,
+					type: 'bot',
 				})
 				return
 			}
@@ -100,18 +84,10 @@ module.exports = {
 			}
 
 			if (perms_req.length) {
-				let no_perms_embed = new EmbedBuilder({
-					fields: [
-						{
-							name: `> Permiso(s) necesarios`,
-							value: `\`\`\`${perms_req.join(' | ')}\`\`\``,
-						},
-					],
-				}).setColor(bot.config.embedsErrorColor)
-
-				message.reply({
-					content: `${bot.config.emojis.wrong} No tienes suficientes permisos`,
-					embeds: [no_perms_embed],
+				bot.noPermsEmbed({
+					perms: perms_req,
+					target: message,
+					type: 'user',
 				})
 				return
 			}
@@ -119,13 +95,9 @@ module.exports = {
 
 		if (cmd.nsfw) {
 			if (!message.channel.nsfw) {
-				message.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Solo puedes usar este comando en un canal **NSFW**`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Solo puedes usar este comando en un canal **NSFW**',
+					target: message,
 				})
 				return
 			}
@@ -143,22 +115,18 @@ module.exports = {
 				const remainingTimeString = ms(Date.now() + remainingTime, {
 					long: false,
 				})
-				message.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsDefaultColor,
-							description: `⏱ Por favor espera ${remainingTimeString} para volver a usar este comando`,
-						}),
-					],
-				})
 
+				bot.simpleEmbed({
+					desc: `⏱ Por favor espera ${remainingTimeString} para volver a usar este comando`,
+					target: message,
+				})
 				return
 			}
 
 			try {
 				cmd.prefix_command.exe(bot, message, args)
 			} catch (err) {
-				console.log(`Ha ocurrido un error con el comando ${cmd.name}`)
+				console.error(`Ha ocurrido un error con el comando ${cmd.name}`)
 				console.log(err)
 			}
 
@@ -172,7 +140,7 @@ module.exports = {
 		try {
 			cmd.prefix_command.exe(bot, message, args)
 		} catch (err) {
-			console.log(`Ha ocurrido un error con el comando ${cmd.name}`)
+			console.error(`Ha ocurrido un error con el comando ${cmd.name}`)
 			console.log(err)
 		}
 	},

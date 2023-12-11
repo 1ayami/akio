@@ -28,37 +28,35 @@ module.exports = {
 			const reason = args.slice(1).join(' ') || 'No se especificó una razón'
 
 			if (!member) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Debes ingresar un usuario para banear`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Debes ingresar un usuario para banear',
+					target: msg,
 				})
 				return
 			}
 
 			if (member.user.id == msg.member.user.id) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} No te puedes banear a ti mismo`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'No te puedes banear a ti mismo',
+					target: msg,
 				})
 				return
 			}
 
 			if (!member.bannable) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} No puedes banear a este usuario`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'No puedes banear a este usuario',
+					target: msg,
+				})
+				return
+			}
+
+			if (
+				!msg.member.roles.highest.comparePositionTo(member.roles.highest) > 0
+			) {
+				bot.errorEmbed({
+					desc: 'No puedes banear a un usuario con una jerarquía mayor o igual a la tuya',
+					target: msg,
 				})
 				return
 			}
@@ -66,22 +64,16 @@ module.exports = {
 			member.timeout()
 
 			await member.ban({ reason: reason })
-			msg.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario **${member.user.username}** ha sido baneado correctamente\nRazón: \`\`\`${reason}\`\`\``,
-					}),
-				],
+
+			bot.successEmbed({
+				desc: `El usuario **${member.user.username}** ha sido baneado correctamente\n\nRazón: \`\`\`${reason}\`\`\``,
+				target: msg,
 			})
 
-			member.user.send({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} Has sido baneado del servidor **${msg.guild.name}**\nRazón: \`\`\`${reason}\`\`\``,
-					}),
-				],
+			bot.simpleEmbed({
+				desc: `🔨 Has sido baneado del servidor **${msg.guild.name}**\n\nRazón: \`\`\`${reason}\`\`\``,
+				type: 'send',
+				target: member.user,
 			})
 		},
 	},
@@ -114,35 +106,34 @@ module.exports = {
 				int.options.getString('razón') || 'No se especificó una razón'
 
 			if (int.user.id == member.user.id) {
-				int.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} No te puedes banear a ti mismo`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'No te puedes banear a ti mismo',
+					target: int,
+				})
+				return
+			}
+
+			if (
+				!int.member.roles.highest.comparePositionTo(member.roles.highest) > 0
+			) {
+				bot.errorEmbed({
+					desc: 'No puedes banear a un usuario con una jerarquía mayor o igual a la tuya',
+					target: int,
 				})
 				return
 			}
 
 			await member.ban({ reason: reason })
 
-			int.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario **${member.user.username}** ha sido baneado correctamente`,
-					}),
-				],
+			bot.successEmbed({
+				desc: `El usuario **${member.user.username}** ha sido baneado correctamente\n\nRazón: \`\`\`${reason}\`\`\``,
+				target: int,
 			})
 
-			member.user.send({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} Has sido baneado del servidor **${int.guild.name}**\nRazón: \`\`\`${reason}\`\`\``,
-					}),
-				],
+			bot.simpleEmbed({
+				desc: `🔨 Has sido baneado del servidor **${int.guild.name}**\n\nRazón: \`\`\`${reason}\`\`\``,
+				type: 'send',
+				target: member.user,
 			})
 		},
 	},

@@ -9,7 +9,7 @@ module.exports = {
 	name: 'lock',
 	category: 'MODERATION',
 	description: 'Bloquea un canal para que ningún usuario pueda escribir en él',
-	bot_permises: ['ViewChannel', 'SendMessages'],
+	bot_permises: ['ViewChannel', 'SendMessages', 'ManageChannels'],
 	user_permises: ['ManageChannels'],
 	usage: '[canal]',
 

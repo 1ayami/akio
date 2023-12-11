@@ -10,7 +10,7 @@ module.exports = {
 	category: 'MODERATION',
 	description:
 		'Desbloquea un canal para que los usuarios puedan escribir en él nuevamente',
-	bot_permises: ['ViewChannel', 'SendMessages'],
+	bot_permises: ['ViewChannel', 'SendMessages', 'ManageChannels'],
 	user_permises: ['ManageChannels'],
 	usage: '[canal]',
 

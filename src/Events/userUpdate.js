@@ -26,8 +26,6 @@ module.exports = {
 				const role = guild.roles.cache.get('1072237774402502719')
 
 				role.setColor(newColorAvatar)
-
-				console.log('ok')
 			} else if (newUser.id == '962393458583146496') {
 				const role = guild.roles.cache.get('1072237774402502725')
 

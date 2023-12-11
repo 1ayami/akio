@@ -27,7 +27,11 @@ module.exports = {
 			const newChannelId = newState?.channelId
 
 			if (!oldChannelId && createChannelID.includes(newChannelId)) {
-				voiceChannelCreate(newState)
+				if (newState.channelId == '1107340744479477931') {
+					voiceChannelCreate(newState, '🎶')
+				} else {
+					voiceChannelCreate(newState, '🔊')
+				}
 			} else if (oldChannelId && !newChannelId) {
 				const channelId = map.get(`tmp_${oldChannelId}`)
 				if (!channelId) return
@@ -44,7 +48,11 @@ module.exports = {
 					!createChannelID.includes(oldChannelId) &&
 					createChannelID.includes(newChannelId)
 				) {
-					voiceChannelCreate(newState)
+					if (newState.channelId == '1107340744479477931') {
+						voiceChannelCreate(newState, '🎶')
+					} else {
+						voiceChannelCreate(newState, '🔊')
+					}
 				}
 
 				const channelId = map.get(`tmp_${oldChannelId}`)
@@ -64,9 +72,9 @@ module.exports = {
 		 *
 		 * @param { VoiceState } newState
 		 */
-		async function voiceChannelCreate(newState) {
+		async function voiceChannelCreate(newState, emoji) {
 			const newVoiceChannel = await newState.guild.channels.create({
-				name: `🔊・Canal de ${newState.member.user.username}`,
+				name: `${emoji}・Canal de ${newState.member.user.username}`,
 				type: 2,
 				parent: newState.channel?.parent,
 				permissionOverwrites: [

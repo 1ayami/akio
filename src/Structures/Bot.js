@@ -3,15 +3,11 @@ const {
 	Client,
 	Collection,
 	Partials,
-	REST,
-	Routes,
 	EmbedBuilder,
 } = require('discord.js')
-const { readdirSync, existsSync } = require('fs')
-const axios = require('axios')
-const Vibrant = require('node-vibrant')
-
-const slashCmds = []
+const { readdirSync } = require('fs')
+const embeds = require('../Hanlders/embeds')
+const tickets = require('../Hanlders/tickets')
 
 class AKIO extends Client {
 	/**
@@ -49,139 +45,114 @@ class AKIO extends Client {
 
 		this.commands = new Collection()
 		this.slashes = 0
-		this.config = require('../../Utils/config.json')
+		this.slashCmds = []
+		this.config = require('../Config/config')
+
+		Object.assign(this, embeds)
+		Object.assign(this, tickets)
 	}
 
-	loadEvents() {
-		this.removeAllListeners()
+	errorEmbed({ desc, type = 'reply', target, send = true, ephemeral }) {
+		const embed = new EmbedBuilder()
+			.setColor(this.config.colors.error)
+			.setDescription(`${this.config.emojis.wrong} ${desc}`)
 
-		const eventsDir = readdirSync('./src/Events').filter((f) =>
-			f.endsWith('.js')
-		)
+		if (!send) return embed
 
-		for (const eventFile of eventsDir) {
-			const event = require(`../Events/${eventFile}`)
-
-			this.on(event.name, (...args) => event.exe(this, ...args))
+		if (type && type.toLowerCase().trim() == 'send') {
+			return this.sendEmbed({
+				embeds: [embed],
+				target: target,
+			})
 		}
 
-		console.log(`🔮 ${eventsDir.length} Eventos cargados`)
-	}
-
-	loadCommands() {
-		this.commands.clear()
-
-		const DirCommands = readdirSync('./src/Commands').filter(
-			(c) => c !== 'Developer'
-		)
-
-		if (DirCommands) {
-			for (const category of DirCommands) {
-				const Commands = readdirSync(`./src/Commands/${category}`).filter(
-					(f) => f.endsWith('.js') && f !== '_Base.js'
-				)
-
-				const Base = require(`../Commands/${category}/_Base.js`)
-
-				slashCmds.push(Base)
-
-				for (const cmd of Commands) {
-					delete require.cache[
-						require.resolve(`../Commands/${category}/${cmd}`)
-					]
-
-					const command = require(`../Commands/${category}/${cmd}`)
-
-					if (!command.name) {
-						console.log(`❌ El comando en el archivo ${cmd} no tiene un nombre`)
-
-						return
-					}
-
-					this.commands.set(command.name, command)
-
-					if (command.slash_command?.name) {
-						this.slashes++
-					} else {
-						console.log(
-							`❌ El slash command en el archivo ${cmd} no tiene un nombre`
-						)
-						return
-					}
-				}
-			}
-
-			console.log(`🔮 ${this.commands.size} PrefixCommands cargados`)
+		if (type && type.toLowerCase().trim() == 'reply') {
+			return this.replyEmbed({
+				embeds: [embed],
+				target: target,
+				ephemeral: ephemeral,
+			})
 		}
 	}
 
-	async loadSlashCommands() {
-		const rest = new REST({ version: '10' }).setToken(process.env.akio_tkn)
+	simpleEmbed({
+		desc,
+		type = 'reply',
+		target,
+		send = true,
+		ephemeral,
+		components,
+	}) {
+		const embed = new EmbedBuilder()
+			.setColor(this.config.colors.normal)
+			.setDescription(desc)
 
-		await rest.put(Routes.applicationCommands('1124757657723613194'), {
-			body: slashCmds,
-		})
+		if (!send) return embed
 
-		console.log(`🔮 ${this.slashes} SlashCommands cargados`)
+		if (type && type.toLowerCase().trim() == 'send') {
+			return this.sendEmbed({
+				embeds: [embed],
+				target: target,
+			})
+		}
+
+		if (type && type.toLowerCase().trim() == 'reply') {
+			return this.replyEmbed({
+				embeds: [embed],
+				target: target,
+				ephemeral: ephemeral,
+				components: components,
+			})
+		}
 	}
 
-	createSimpleEmbed({ color, description } = {}) {
-		const embed = new EmbedBuilder().setColor(color).setDescription(description)
+	successEmbed({
+		desc,
+		type = 'reply',
+		target,
+		send = true,
+		ephemeral,
+		components,
+	}) {
+		const embed = new EmbedBuilder()
+			.setColor(this.config.colors.success)
+			.setDescription(`${this.config.emojis.right} ${desc}`)
 
-		return embed
-	}
+		if (!send) return embed
 
-	getESPermission(perm) {
-		const permisesES = require('../../Utils/permises-es.json')
-		const perm_es = permisesES[perm]
+		if (type && type.toLowerCase().trim() == 'send') {
+			return this.sendEmbed({
+				embeds: [embed],
+				target: target,
+			})
+		}
 
-		if (!perm_es)
-			throw new Error(`❌ El permiso introducido no es válido: ${perm}`)
-
-		return perm_es
-	}
-
-	async getVibrantColor(image) {
-		if (typeof image == 'string') {
-			try {
-				const response = await axios.get(image, {
-					responseType: 'arraybuffer',
-				})
-
-				const buffer = Buffer.from(response.data, 'binary')
-
-				const vibrant = new Vibrant(buffer)
-				const palette = await vibrant.getPalette()
-
-				let dominantColor = palette.Vibrant.hex
-				return dominantColor
-			} catch (error) {
-				console.error('Error:', error)
-				return null
-			}
-		} else {
-			const vibrant = new Vibrant(image)
-
-			try {
-				const palette = await vibrant.getPalette()
-				const dominantColor = palette.Vibrant.hex
-
-				return dominantColor
-			} catch (error) {
-				console.error('Error:', error)
-				return null
-			}
+		if (type && type.toLowerCase().trim() == 'reply') {
+			return this.replyEmbed({
+				embeds: [embed],
+				target: target,
+				ephemeral: ephemeral,
+				components: components,
+			})
 		}
 	}
 
 	init() {
-		const ascii = `\r\n    ___       ___       ___       ___   \r\n   \/\\  \\     \/\\__\\     \/\\  \\     \/\\  \\  \r\n  \/::\\  \\   \/:\/ _\/_   _\\:\\  \\   \/::\\  \\ \r\n \/::\\:\\__\\ \/::-\"\\__\\ \/\\\/::\\__\\ \/:\/\\:\\__\\\r\n \\\/\\::\/  \/ \\;:;-\",-\" \\::\/\\\/__\/ \\:\\\/:\/  \/\r\n   \/:\/  \/   |:|  |    \\:\\__\\    \\::\/  \/ \r\n   \\\/__\/     \\|__|     \\\/__\/     \\\/__\/  \r\n
-	`
+		const ascii = this.config.ascii
+
 		console.log(ascii)
 
-		this.loadEvents()
-		this.loadCommands()
-		this.loadSlashCommands()
+		const functions = readdirSync('./src/Utils/Functions')
+
+		for (const fct of functions) {
+			const f = fct.split('.')[0]
+			this[f] = require(`../Utils/Functions/${f}`)
+		}
+
+		this['loadEvents'](this)
+		this['loadCommands'](this)
+		this['loadSlashCommands'](this)
+
 		this.login(process.env.akio_tkn)
 	}
 }

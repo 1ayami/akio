@@ -28,24 +28,20 @@ module.exports = {
 			const ch = msg.guild.channels.cache.get('1072240622582366238')
 
 			if (!sug) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Debes ingresar una sugerencia`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Debes ingresar una sugerencia',
+					target: msg,
 				})
 				return
 			}
 
 			const embedSug = new EmbedBuilder()
-				.setColor(bot.config.embedsDefaultColor)
+				.setColor(bot.config.colors.normal)
 				.setTitle('> Nueva sugerencia <a:penguin_process:874377421128888370>')
 				.addFields([
 					{
 						name: '<:member:1129903183850917978> Usuario',
-						value: `ID: \`${msg.author.id}\` | tag: \`${msg.author.tag}\``,
+						value: `ID: \`${msg.author.id}\` | user: \`${msg.author.tag}\``,
 					},
 					{
 						name: '<:purplearrow:1129823325170958457> Sugerencia',
@@ -55,19 +51,17 @@ module.exports = {
 				.setThumbnail(msg.author.displayAvatarURL())
 
 			const ms = await ch.send({ embeds: [embedSug] })
-			msg.delete()
+
+			console.log(ms)
 
 			await ms.react(bot.config.emojis.right)
 			await ms.react('❓')
 			await ms.react(bot.config.emojis.wrong)
 
-			await msg.channel.send({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} ${msg.author} Tu sugerencia fue enviada correctamente`,
-					}),
-				],
+			await bot.successEmbed({
+				desc: 'Tu sugerencia fue enviada correctamente',
+				target: msg.channel,
+				type: 'send',
 			})
 		},
 	},
@@ -93,15 +87,15 @@ module.exports = {
 			const sug = int.options.getString('sugerencia')
 			const ch = int.guild.channels.cache.get('1072240622582366238')
 
-			const m = await int.deferReply()
+			const e = await int.deferReply()
 
 			const embedSug = new EmbedBuilder()
-				.setColor(bot.config.embedsDefaultColor)
+				.setColor(bot.config.colors.normal)
 				.setTitle('> Nueva sugerencia <a:penguin_process:874377421128888370>')
 				.addFields([
 					{
 						name: '<:member:1129903183850917978> Usuario',
-						value: `ID: \`${int.user.id}\` | tag: \`${int.user.tag}\``,
+						value: `ID: \`${int.user.id}\` | user: \`${int.user.tag}\``,
 					},
 					{
 						name: '<:purplearrow:1129823325170958457> Sugerencia',
@@ -111,18 +105,19 @@ module.exports = {
 				.setThumbnail(int.user.displayAvatarURL())
 
 			const ms = await ch.send({ embeds: [embedSug] })
-			await m.edit({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} Tu sugerencia fue enviada correctamente`,
-					}),
-				],
-			})
 
 			await ms.react(bot.config.emojis.right)
 			await ms.react('❓')
 			await ms.react(bot.config.emojis.wrong)
+
+			await e.edit({
+				embeds: [
+					bot.successEmbed({
+						desc: 'Tu sugerencia fue enviada correctamente',
+						send: false,
+					}),
+				],
+			})
 		},
 	},
 }

@@ -41,13 +41,9 @@ module.exports = {
 
 			if (typeof member == 'string') {
 				if (!userIDRegex.test(member)) {
-					msg.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsErrorColor,
-								description: `${bot.config.emojis.wrong} La ID que ingresaste es inválida`,
-							}),
-						],
+					bot.errorEmbed({
+						desc: 'La ID que ingresaste es inválida',
+						target: msg,
 					})
 					return
 				}
@@ -59,13 +55,9 @@ module.exports = {
 				const avatarHash = userData.data.data.avatar
 
 				if (!avatarHash) {
-					msg.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsErrorColor,
-								description: `${bot.config.emojis.wrong} El usuario especificado no tiene una foto de perfil`,
-							}),
-						],
+					bot.errorEmbed({
+						desc: 'El usuario especificado no tiene una foto de perfil',
+						target: msg,
 					})
 					return
 				}
@@ -75,7 +67,7 @@ module.exports = {
 				const userPFP = `https://cdn.discordapp.com/avatars/${member}/${avatarHash}.${avatarExtension}?size=4096`
 
 				avatarEmbed
-					.setTitle(`☂ Avatar de ${userData.data.data.username}`)
+					.setTitle(`☂ Avatar de ${userData.data.data.global_name}`)
 					.setImage(userPFP)
 					.setColor(
 						await bot.getVibrantColor(
@@ -96,7 +88,7 @@ module.exports = {
 			}
 
 			avatarEmbed
-				.setTitle(`☂ Avatar de ${member.user.username}`)
+				.setTitle(`☂ Avatar de ${member.user.displayName}`)
 				.setImage(member.user.displayAvatarURL({ size: 4096 }))
 				.setColor(
 					await bot.getVibrantColor(
@@ -151,13 +143,9 @@ module.exports = {
 
 			if (typeof member == 'string') {
 				if (!userIDRegex.test(member)) {
-					int.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsErrorColor,
-								description: `${bot.config.emojis.wrong} La ID que ingresaste es inválida`,
-							}),
-						],
+					bot.errorEmbed({
+						desc: 'La ID que ingresaste es inválida',
+						target: int,
 					})
 					return
 				}
@@ -169,13 +157,9 @@ module.exports = {
 				const avatarHash = userData.data.data.avatar
 
 				if (!avatarHash) {
-					int.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsErrorColor,
-								description: `${bot.config.emojis.wrong} El usuario especificado no tiene una foto de perfil`,
-							}),
-						],
+					bot.errorEmbed({
+						desc: 'El usuario especificado no tiene una foto de perfil',
+						target: int,
 					})
 					return
 				}
@@ -185,7 +169,7 @@ module.exports = {
 				const userPFP = `https://cdn.discordapp.com/avatars/${member}/${avatarHash}.${avatarExtension}?size=4096`
 
 				avatarEmbed
-					.setTitle(`☂ Avatar de ${userData.data.data.username}`)
+					.setTitle(`☂ Avatar de ${userData.data.data.global_name}`)
 					.setImage(userPFP)
 					.setColor(
 						await bot.getVibrantColor(
@@ -205,7 +189,7 @@ module.exports = {
 			}
 
 			avatarEmbed
-				.setTitle(`☂ Avatar de ${member.user.username}`)
+				.setTitle(`☂ Avatar de ${member.user.displayName}`)
 				.setImage(member.user.displayAvatarURL({ size: 4096 }))
 				.setColor(
 					await bot.getVibrantColor(

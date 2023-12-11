@@ -23,7 +23,7 @@ module.exports = {
 		 */
 		exe(bot, msg, args) {
 			const embed = new EmbedBuilder()
-				.setColor(bot.config.embedsDefaultColor)
+				.setColor(bot.config.colors.normal)
 				.setAuthor({
 					iconURL: bot.user.displayAvatarURL(),
 					name: bot.user.username,
@@ -48,7 +48,7 @@ module.exports = {
 		 */
 		exe(bot, int) {
 			const embed = new EmbedBuilder()
-				.setColor(bot.config.embedsDefaultColor)
+				.setColor(bot.config.colors.normal)
 				.setAuthor({
 					iconURL: bot.user.displayAvatarURL(),
 					name: bot.user.username,

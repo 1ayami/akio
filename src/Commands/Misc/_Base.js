@@ -6,7 +6,7 @@ const subCommands = []
 for (const c of cmds) {
 	const data = require(`../Misc/${c}`).slash_command
 
-	data ? subCommands.push(data) : null
+	data && data.name ? subCommands.push(data) : null
 }
 
 const Base = {
