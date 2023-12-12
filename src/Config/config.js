@@ -9,6 +9,7 @@ module.exports = {
 	emojis: {
 		right: '<:uright:886674467428892672>',
 		wrong: '<:uwrong:886674267595477072>',
+		caution: '<:ncaution:855090352690954301>',
 	},
 
 	colors: {

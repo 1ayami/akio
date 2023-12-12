@@ -28,42 +28,29 @@ module.exports = {
 			const userId = args[0]
 			const reason = args.slice(1).join(' ') || 'No se especificó una razón'
 
-			const userIDRegex = new RegExp(/^([0-9]{17,20})$/)
-
-			if (!userId || isNaN(userId) || !userIDRegex.test(userId)) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Ingresa una ID de usuario válida`,
-						}),
-					],
-				})
-				return
-			}
-
-			const bannedUser = msg.guild.bans.cache.get(userId)
+			const bannedUser =
+				msg.guild.bans.cache.get(userId) ||
+				msg.guild.bans.cache.find((u) => u.user.username == userId)
 
 			if (!bannedUser) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Este usuario no está baneado`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Este usuario no está baneado o no se encontró en la lista',
+					target: msg,
 				})
 				return
 			}
 
-			await msg.guild.members.ban(bannedUser.user, { reason: reason })
-			msg.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario **${bannedUser.user.username}** ha sido desbaneado`,
-					}),
-				],
+			await msg.guild.members.unban(bannedUser.user, { reason: reason })
+
+			bot.successEmbed({
+				desc: `🔨 El usuario **${bannedUser.user.username}** ha sido desbaneado`,
+				target: msg,
+			})
+
+			bot.simpleEmbed({
+				desc: `🔨 Has sido desbaneado del servidor **${msg.guild.name}**`,
+				target: bannedUser.user,
+				type: 'send',
 			})
 		},
 	},
@@ -94,44 +81,31 @@ module.exports = {
 			const userId = int.options.getString('id')
 			const reason = int.options.getString('razón')
 
-			const userIDRegex = new RegExp(/^([0-9]{17,20})$/)
-
-			if (isNaN(userId) || !userIDRegex.test(userId)) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Ingresa una ID de usuario válida`,
-						}),
-					],
-				})
-				return
-			}
-
 			await int.guild.bans.fetch()
 
-			const bannedUser = int.guild.bans.cache.get(userId)
+			const bannedUser =
+				int.guild.bans.cache.get(userId) ||
+				int.guild.bans.cache.find((u) => u.user.username == userId)
 
 			if (!bannedUser) {
-				int.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Este usuario no está baneado`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Este usuario no está baneado o no se encontró en la lista',
+					target: int,
 				})
 				return
 			}
 
 			await int.guild.members.unban(bannedUser.user, { reason: reason })
-			int.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `${bot.config.emojis.right} El usuario **${bannedUser.user.username}** ha sido desbaneado`,
-					}),
-				],
+
+			bot.successEmbed({
+				desc: `El usuario **${bannedUser.user.username}** ha sido desbaneado`,
+				target: int,
+			})
+
+			bot.simpleEmbed({
+				desc: `🔨 Has sido desbaneado del servidor **${int.guild.name}**`,
+				target: bannedUser.user,
+				type: 'send',
 			})
 		},
 	},

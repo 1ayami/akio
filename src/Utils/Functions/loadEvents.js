@@ -1,5 +1,10 @@
 const { readdirSync } = require('fs')
+const { AKIO } = require('../../Structures/Bot')
 
+/**
+ * 
+ * @param { AKIO } bot 
+ */
 module.exports = (bot) => {
     bot.removeAllListeners()
 

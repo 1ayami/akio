@@ -31,25 +31,17 @@ module.exports = {
 			const everyone = msg.guild.roles.cache.find((r) => r.name == '@everyone')
 
 			if (!ch) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Debes especificar un canal para bloquear`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Debes especificar un canal para bloquear',
+					target: msg,
 				})
 				return
 			}
 
 			if (!ch.permissionsFor(everyone).has('SendMessages')) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} El canal ${ch} ya está bloqueado`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: `El canal ${ch} ya está bloqueado`,
+					target: msg,
 				})
 				return
 			}
@@ -63,21 +55,17 @@ module.exports = {
 				],
 			})
 
-			msg.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `🔒 ${bot.config.emojis.right} El canal ${ch} está bloqueado`,
-					}),
-				],
+			bot.successEmbed({
+				desc: `🔒 El canal ${ch} está bloqueado`,
+				target: msg,
 			})
 
 			if (ch.id !== msg.channel.id) {
 				ch.send({
 					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsSucessColor,
-							description: `🔒 ${bot.config.emojis.right} Este canal ha sido bloqueado`,
+						bot.simpleEmbed({
+							desc: `🔒 ${bot.config.emojis.right} Este canal ha sido bloqueado`,
+							send: false,
 						}),
 					],
 				})
@@ -108,25 +96,17 @@ module.exports = {
 			const everyone = int.guild.roles.cache.find((r) => r.name == '@everyone')
 
 			if (!ch) {
-				int.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Debes especificar un canal para bloquear`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Debes especificar un canal para bloquear',
+					target: int,
 				})
 				return
 			}
 
 			if (!ch.permissionsFor(everyone).has('SendMessages')) {
-				int.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} El canal ${ch} ya está bloqueado`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: `El canal ${ch} ya está bloqueado`,
+					target: int,
 				})
 				return
 			}
@@ -140,21 +120,17 @@ module.exports = {
 				],
 			})
 
-			int.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `🔒 ${bot.config.emojis.right} El canal ${ch} está bloqueado`,
-					}),
-				],
+			bot.successEmbed({
+				desc: `🔒 El canal ${ch} está bloqueado`,
+				target: int,
 			})
 
 			if (ch.id !== int.channel.id) {
 				ch.send({
 					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsSucessColor,
-							description: `🔒 ${bot.config.emojis.right} Este canal ha sido bloqueado`,
+						bot.simpleEmbed({
+							desc: `🔒 ${bot.config.emojis.right} Este canal ha sido bloqueado`,
+							send: false,
 						}),
 					],
 				})

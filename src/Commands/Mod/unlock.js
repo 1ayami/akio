@@ -32,25 +32,17 @@ module.exports = {
 			const everyone = msg.guild.roles.everyone
 
 			if (!ch) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Debes especificar un canal para desbloquear`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Debes especificar un canal para desbloquear',
+					target: msg
 				})
 				return
 			}
 
 			if (ch.permissionsFor(everyone).has('SendMessages')) {
-				msg.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} El canal ${ch} ya está desbloqueado`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: `El canal ${ch} ya está desbloqueado`,
+					target: msg
 				})
 				return
 			}
@@ -64,22 +56,18 @@ module.exports = {
 				],
 			})
 
-			msg.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `🔓 ${bot.config.emojis.right} El canal ${ch} está desbloqueado`,
-					}),
-				],
+			bot.successEmbed({
+				desc: `🔓 El canal ${ch} está desbloqueado`,
+				target: msg
 			})
 
 			if (ch.id !== msg.channel.id) {
 				ch.send({
 					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsSucessColor,
-							description: `🔓 ${bot.config.emojis.right} Este canal ha sido desbloqueado`,
-						}),
+						bot.simpleEmbed({
+							desc: `🔓 ${bot.config.emojis.right} Este canal ha sido desbloqueado`,
+							send: false
+						})
 					],
 				})
 			}
@@ -109,25 +97,17 @@ module.exports = {
 			const everyone = int.guild.roles.cache.find((r) => r.name == '@everyone')
 
 			if (!ch) {
-				int.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} Debes especificar un canal para desbloquear`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: 'Debes especificar un canal para desbloquear',
+					target: int
 				})
 				return
 			}
 
 			if (ch.permissionsFor(everyone).has('SendMessages')) {
-				int.reply({
-					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsErrorColor,
-							description: `${bot.config.emojis.wrong} El canal ${ch} ya está desbloqueado`,
-						}),
-					],
+				bot.errorEmbed({
+					desc: `El canal ${ch} ya está desbloqueado`,
+					target: int
 				})
 				return
 			}
@@ -141,22 +121,17 @@ module.exports = {
 				],
 			})
 
-			int.reply({
-				embeds: [
-					bot.createSimpleEmbed({
-						color: bot.config.embedsSucessColor,
-						description: `🔓 ${bot.config.emojis.right} El canal ${ch} está desbloqueado`,
-					}),
-				],
+			bot.successEmbed({
+				desc: `🔓 El canal ${ch} está desbloqueado`
 			})
 
 			if (ch.id !== int.channel.id) {
 				ch.send({
 					embeds: [
-						bot.createSimpleEmbed({
-							color: bot.config.embedsSucessColor,
-							description: `🔓 ${bot.config.emojis.right} Este canal ha sido desbloqueado`,
-						}),
+						bot.simpleEmbed({
+							desc: `🔓 ${bot.config.emojis.right} Este canal ha sido desbloqueado`,
+							send: false
+						})
 					],
 				})
 			}

@@ -56,6 +56,7 @@ class AKIO extends Client {
 		const embed = new EmbedBuilder()
 			.setColor(this.config.colors.error)
 			.setDescription(`${this.config.emojis.wrong} ${desc}`)
+			.setTitle('Error')
 
 		if (!send) return embed
 
