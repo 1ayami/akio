@@ -23,7 +23,7 @@ class AKIO extends Client {
 			presence: {
 				activities: [
 					{
-						name: '00*+',
+						name: '2024・00*+',
 						type: 0,
 					},
 				],
