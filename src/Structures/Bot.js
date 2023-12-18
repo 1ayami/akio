@@ -8,6 +8,7 @@ const {
 const { readdirSync } = require('fs')
 const embeds = require('../Hanlders/embeds')
 const tickets = require('../Hanlders/tickets')
+const { asciiv2 } = require('../Config/config')
 
 class AKIO extends Client {
 	/**
@@ -141,7 +142,7 @@ class AKIO extends Client {
 	init() {
 		const ascii = this.config.ascii
 
-		console.log(ascii)
+		console.log(asciiv2)
 
 		const functions = readdirSync('./src/Utils/Functions')
 

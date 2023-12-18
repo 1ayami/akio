@@ -72,13 +72,9 @@ module.exports = {
 
 			if (cmd.category && cmd.category == 'DEVELOPER') {
 				if (int.user.id !== bot.config['dev.id']) {
-					int.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsErrorColor,
-								description: `${bot.config.emojis.wrong} Este comando puede ser usado solo por el dueño del bot`,
-							}),
-						],
+					bot.errorEmbed({
+						desc: 'Este comando puede ser usado solo por el dueño del bot',
+						target: int,
 					})
 					return
 				}
@@ -126,13 +122,9 @@ module.exports = {
 
 			if (cmd.nsfw) {
 				if (!int.channel.nsfw) {
-					int.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsErrorColor,
-								description: `${bot.config.emojis.wrong} Solo puedes usar este comando en un canal **NSFW**`,
-							}),
-						],
+					bot.errorEmbed({
+						desc: 'Solo puedes usar este comando en un canal **NSFW**',
+						target: int,
 					})
 					return
 				}
@@ -150,13 +142,10 @@ module.exports = {
 					const remainingTimeString = ms(Date.now() + remainingTime, {
 						long: false,
 					})
-					int.reply({
-						embeds: [
-							bot.createSimpleEmbed({
-								color: bot.config.embedsDefaultColor,
-								description: `⏱ Por favor espera ${remainingTimeString} para volver a usar este comando`,
-							}),
-						],
+
+					bot.simpleEmbed({
+						desc: `⏱ Por favor espera ${remainingTimeString} para volver a usar este comando`,
+						target: int,
 					})
 
 					return
