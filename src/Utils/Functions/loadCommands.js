@@ -42,6 +42,6 @@ module.exports = (bot) => {
 			}
 		}
 
-		console.log(`🔮 ${bot.commands.size} PrefixCommands cargados`)
+		console.log(`✅ ${bot.commands.size} PrefixCommands cargados`)
 	}
 }

@@ -7,6 +7,6 @@ module.exports = {
 	 * @param {AKIO} bot
 	 */
 	exe(bot) {
-		console.log(`🔮 Bot iniciado como ${bot.user.username}`)
+		console.log(`✅ Bot iniciado como ${bot.user.username}`)
 	},
 }

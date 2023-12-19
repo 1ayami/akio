@@ -1,7 +1,6 @@
 const { AKIO } = require('../Structures/Bot')
 const { Message } = require('discord.js')
 const { distance } = require('fastest-levenshtein')
-const { EmbedBuilder } = require('discord.js')
 const Timeouts = new Map()
 const ms = require('ms')
 

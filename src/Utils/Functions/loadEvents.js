@@ -18,5 +18,5 @@ module.exports = (bot) => {
         bot.on(event.name, (...args) => event.exe(bot, ...args))
     }
 
-    console.log(`🔮 ${eventsDir.length} Eventos cargados`)
+    console.log(`✅ ${eventsDir.length} Eventos cargados`)
 }

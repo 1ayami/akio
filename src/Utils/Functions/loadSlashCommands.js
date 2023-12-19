@@ -7,5 +7,5 @@ module.exports = async (bot) => {
 		body: bot.slashCmds,
 	})
 
-	console.log(`🔮 ${bot.slashes} SlashCommands cargados`)
+	console.log(`✅ ${bot.slashes} SlashCommands cargados`)
 }
