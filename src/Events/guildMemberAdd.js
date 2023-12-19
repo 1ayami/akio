@@ -10,6 +10,7 @@ module.exports = {
 	 * @param { GuildMember } member
 	 */
 	exe(bot, member) {
+		// Embed de bienvenida
 		const embedWLC = new EmbedBuilder()
 			.setColor(bot.config.colors.normal)
 			.setThumbnail(member.user.displayAvatarURL({ size: 4096 }))
@@ -23,5 +24,10 @@ module.exports = {
 		const canal = member.guild.channels.cache.get('1186504848565354516')
 
 		canal.send({ content: `${member}`, embeds: [embedWLC] })
+
+		// Auto-rol
+		const rol = member.guild.roles.cache.get('1072237774402502717')
+
+		member.roles.add(rol)
 	},
 }
