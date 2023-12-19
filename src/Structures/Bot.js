@@ -154,6 +154,7 @@ class AKIO extends Client {
 		this['loadEvents'](this)
 		this['loadCommands'](this)
 		this['loadSlashCommands'](this)
+		this['mongoDBConnect'](this)
 
 		this.login(process.env.akio_tkn)
 	}
