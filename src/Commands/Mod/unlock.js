@@ -3,6 +3,7 @@ const {
 	Message,
 	ChatInputCommandInteraction,
 	ApplicationCommandOptionType,
+	ChannelType,
 } = require('discord.js')
 
 module.exports = {
@@ -34,6 +35,14 @@ module.exports = {
 			if (!ch) {
 				bot.errorEmbed({
 					desc: 'Debes especificar un canal para desbloquear',
+					target: msg,
+				})
+				return
+			}
+
+			if (ch.type !== ChannelType.GuildText) {
+				bot.errorEmbed({
+					desc: 'Solo puedes desbloquear canales de texto',
 					target: msg,
 				})
 				return
@@ -96,9 +105,9 @@ module.exports = {
 
 			const everyone = int.guild.roles.cache.find((r) => r.name == '@everyone')
 
-			if (!ch) {
+			if (ch.type !== ChannelType.GuildText) {
 				bot.errorEmbed({
-					desc: 'Debes especificar un canal para desbloquear',
+					desc: 'Solo puedes desbloquear canales de texto',
 					target: int,
 				})
 				return
