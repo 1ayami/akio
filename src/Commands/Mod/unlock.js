@@ -34,7 +34,7 @@ module.exports = {
 			if (!ch) {
 				bot.errorEmbed({
 					desc: 'Debes especificar un canal para desbloquear',
-					target: msg
+					target: msg,
 				})
 				return
 			}
@@ -42,7 +42,7 @@ module.exports = {
 			if (ch.permissionsFor(everyone).has('SendMessages')) {
 				bot.errorEmbed({
 					desc: `El canal ${ch} ya está desbloqueado`,
-					target: msg
+					target: msg,
 				})
 				return
 			}
@@ -58,7 +58,7 @@ module.exports = {
 
 			bot.successEmbed({
 				desc: `🔓 El canal ${ch} está desbloqueado`,
-				target: msg
+				target: msg,
 			})
 
 			if (ch.id !== msg.channel.id) {
@@ -66,8 +66,8 @@ module.exports = {
 					embeds: [
 						bot.simpleEmbed({
 							desc: `🔓 ${bot.config.emojis.right} Este canal ha sido desbloqueado`,
-							send: false
-						})
+							send: false,
+						}),
 					],
 				})
 			}
@@ -99,7 +99,7 @@ module.exports = {
 			if (!ch) {
 				bot.errorEmbed({
 					desc: 'Debes especificar un canal para desbloquear',
-					target: int
+					target: int,
 				})
 				return
 			}
@@ -107,7 +107,7 @@ module.exports = {
 			if (ch.permissionsFor(everyone).has('SendMessages')) {
 				bot.errorEmbed({
 					desc: `El canal ${ch} ya está desbloqueado`,
-					target: int
+					target: int,
 				})
 				return
 			}
@@ -122,7 +122,7 @@ module.exports = {
 			})
 
 			bot.successEmbed({
-				desc: `🔓 El canal ${ch} está desbloqueado`
+				desc: `🔓 El canal ${ch} está desbloqueado`,
 			})
 
 			if (ch.id !== int.channel.id) {
@@ -130,8 +130,8 @@ module.exports = {
 					embeds: [
 						bot.simpleEmbed({
 							desc: `🔓 ${bot.config.emojis.right} Este canal ha sido desbloqueado`,
-							send: false
-						})
+							send: false,
+						}),
 					],
 				})
 			}
