@@ -13,7 +13,7 @@ module.exports = {
 	user_permises: [],
 
 	prefix_command: {
-		aliases: [],
+		aliases: ['actu'],
 
 		/**
 		 *
@@ -31,6 +31,7 @@ module.exports = {
 				.setDescription(
 					`Puedes ver las actualizaciones en el canal <#1072240652517113926> o en el **[repositorio de GitHub](https://github.com/1ayami/akio)**`
 				)
+				.setFooter(bot.config.discord.footer)
 
 			msg.reply({ embeds: [embed] })
 		},
@@ -56,6 +57,7 @@ module.exports = {
 				.setDescription(
 					`Puedes ver las actualizaciones en el canal <#1072240652517113926> o en el **[repositorio de GitHub](https://github.com/1ayami/akio)**`
 				)
+				.setFooter(bot.config.discord.footer)
 
 			int.reply({ embeds: [embed] })
 		},
