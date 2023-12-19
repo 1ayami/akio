@@ -32,14 +32,6 @@ module.exports = {
 
 			const everyone = msg.guild.roles.everyone
 
-			if (!ch) {
-				bot.errorEmbed({
-					desc: 'Debes especificar un canal para desbloquear',
-					target: msg,
-				})
-				return
-			}
-
 			if (ch.type !== ChannelType.GuildText) {
 				bot.errorEmbed({
 					desc: 'Solo puedes desbloquear canales de texto',

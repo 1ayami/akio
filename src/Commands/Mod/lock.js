@@ -31,14 +31,6 @@ module.exports = {
 
 			const everyone = msg.guild.roles.cache.find((r) => r.name == '@everyone')
 
-			if (!ch) {
-				bot.errorEmbed({
-					desc: 'Debes especificar un canal para bloquear',
-					target: msg,
-				})
-				return
-			}
-
 			if (ch.type !== ChannelType.GuildText) {
 				bot.errorEmbed({
 					desc: 'Solo puedes bloquear canales de texto',
