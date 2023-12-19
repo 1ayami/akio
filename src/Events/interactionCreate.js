@@ -139,7 +139,7 @@ module.exports = {
 				const remainingTime = cooldown ? cooldown - now : 0
 
 				if (remainingTime > 0) {
-					const remainingTimeString = ms(Date.now() + remainingTime, {
+					const remainingTimeString = ms(remainingTime, {
 						long: false,
 					})
 
@@ -163,13 +163,13 @@ module.exports = {
 				setTimeout(() => {
 					Timeouts.delete(key)
 				}, cmd.cooldown)
-			}
-
-			try {
-				cmd.slash_command.exe(bot, int)
-			} catch (err) {
-				console.log(`Ha ocurrido un error con el comando ${cmd.name}`)
-				console.log(err)
+			} else {
+				try {
+					cmd.slash_command.exe(bot, int)
+				} catch (err) {
+					console.log(`Ha ocurrido un error con el comando ${cmd.name}`)
+					console.log(err)
+				}
 			}
 		}
 	},

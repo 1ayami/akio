@@ -112,12 +112,12 @@ module.exports = {
 			const remainingTime = cooldown ? cooldown - now : 0
 
 			if (remainingTime > 0) {
-				const remainingTimeString = ms(Date.now() + remainingTime, {
+				const remainingTimeString = ms(remainingTime, {
 					long: false,
 				})
 
 				bot.simpleEmbed({
-					desc: `⏱ Por favor espera ${remainingTimeString} para volver a usar este comando`,
+					desc: `⏱ Por favor espera \`${remainingTimeString}\` para volver a usar este comando`,
 					target: message,
 				})
 				return
@@ -135,13 +135,13 @@ module.exports = {
 			setTimeout(() => {
 				Timeouts.delete(key)
 			}, cmd.cooldown)
-		}
-
-		try {
-			cmd.prefix_command.exe(bot, message, args)
-		} catch (err) {
-			console.error(`Ha ocurrido un error con el comando ${cmd.name}`)
-			console.log(err)
+		} else {
+			try {
+				cmd.prefix_command.exe(bot, message, args)
+			} catch (err) {
+				console.error(`Ha ocurrido un error con el comando ${cmd.name}`)
+				console.log(err)
+			}
 		}
 	},
 }

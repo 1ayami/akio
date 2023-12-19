@@ -13,6 +13,7 @@ module.exports = {
 	bot_permises: ['ViewChannel', 'SendMessages'],
 	user_permises: [],
 	usage: '<sugerencia>',
+	cooldown: 1000 * 600,
 
 	prefix_command: {
 		aliases: ['sug', 'sugerir'],
@@ -52,17 +53,15 @@ module.exports = {
 
 			const ms = await ch.send({ embeds: [embedSug] })
 
-			console.log(ms)
-
-			await ms.react(bot.config.emojis.right)
-			await ms.react('❓')
-			await ms.react(bot.config.emojis.wrong)
-
 			await bot.successEmbed({
 				desc: 'Tu sugerencia fue enviada correctamente',
 				target: msg.channel,
 				type: 'send',
 			})
+
+			await ms.react(bot.config.emojis.right)
+			await ms.react('❓')
+			await ms.react(bot.config.emojis.wrong)
 		},
 	},
 	slash_command: {
@@ -106,10 +105,6 @@ module.exports = {
 
 			const ms = await ch.send({ embeds: [embedSug] })
 
-			await ms.react(bot.config.emojis.right)
-			await ms.react('❓')
-			await ms.react(bot.config.emojis.wrong)
-
 			await e.edit({
 				embeds: [
 					bot.successEmbed({
@@ -118,6 +113,10 @@ module.exports = {
 					}),
 				],
 			})
+
+			await ms.react(bot.config.emojis.right)
+			await ms.react('❓')
+			await ms.react(bot.config.emojis.wrong)
 		},
 	},
 }
