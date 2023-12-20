@@ -2,6 +2,7 @@ const { AKIO } = require('../Structures/Bot')
 const { Message } = require('discord.js')
 const { distance } = require('fastest-levenshtein')
 const Timeouts = new Map()
+const levelsModel = require('../Models/levels')
 const ms = require('ms')
 
 module.exports = {
@@ -15,7 +16,58 @@ module.exports = {
 	async exe(bot, message) {
 		const prefix = bot.config.prefix
 
-		if (message.author.bot || !message.content.startsWith(prefix)) return
+		if (message.author.bot) return
+
+		// Sistema de niveles
+		const user = await levelsModel.findOne({ userID: message.author.id })
+
+		if (!user) {
+			const newUser = new levelsModel({
+				userName: message.author.username,
+				userID: message.author.id,
+				level: 1,
+				xp: 1,
+			})
+
+			await newUser.save()
+		}
+
+		const { xp, level } = await levelsModel.findOne({
+			userID: message.author.id,
+		})
+
+		const randomXP = Math.floor(Math.random() * 30) + 1
+		const levelUP = 5 * level ** 2 + 50 * level + 100
+
+		const levelUPchannel = bot.channels.cache.get('1186827248611889283')
+
+		if (xp + randomXP >= levelUP) {
+			await levelsModel.findOneAndUpdate(
+				{ userID: message.author.id },
+				{ level: level + 1, xp: 1 }
+			)
+
+			levelUPchannel.send({
+				content: `${message.author}`,
+				embeds: [
+					bot.simpleEmbed({
+						desc: `💜 Felicidades **${
+							message.author.displayName
+						}**, lograste subir al nivel \`${level + 1}\`, sigue así!`,
+						send: false,
+					}),
+				],
+			})
+		} else {
+			await levelsModel.findOneAndUpdate(
+				{ userID: message.author.id },
+				{ xp: xp + randomXP }
+			)
+		}
+
+		////
+
+		if (!message.content.startsWith(prefix)) return
 
 		const args = message.content.slice(prefix.length).trim().split(' ')
 
