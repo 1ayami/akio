@@ -70,7 +70,7 @@ module.exports = {
 				.setRequiredXp(5 * userLvL.level ** 2 + 50 * userLvL.level + 100)
 				.build()
 
-			msg.reply({ files: [{ attachment: newCard, name: 'rank.jpg' }] })
+			msg.reply({ files: [{ attachment: newCard, name: 'rank.png' }] })
 		},
 	},
 	slash_command: {

@@ -4,6 +4,7 @@ const { distance } = require('fastest-levenshtein')
 const Timeouts = new Map()
 const levelsModel = require('../Models/levels')
 const ms = require('ms')
+const { LevelUp } = require('canvafy')
 
 module.exports = {
 	name: 'messageCreate',
@@ -47,16 +48,23 @@ module.exports = {
 				{ level: level + 1, xp: 1 }
 			)
 
+			const card = await new LevelUp()
+				.setAvatar(
+					message.author.displayAvatarURL({ extension: 'jpg', size: 4096 })
+				)
+				.setLevels(level, level + 1)
+				.setBackground(
+					'image',
+					'https://media.everskies.com/7SV_5laGsdWQl3YURIpq.jpg'
+				)
+				.setUsername(message.author.username, '#ffffff')
+				.setBorder('#B0CBFF')
+				.setAvatarBorder('#B0CBFF')
+				.build()
+
 			levelUPchannel.send({
-				content: `${message.author}`,
-				embeds: [
-					bot.simpleEmbed({
-						desc: `💜 Felicidades **${
-							message.author.displayName
-						}**, lograste subir al nivel \`${level + 1}\`, sigue así!`,
-						send: false,
-					}),
-				],
+				content: `${message.author} subiste de nivel!!`,
+				files: [{ attachment: card, name: 'levelup.png' }],
 			})
 		} else {
 			await levelsModel.findOneAndUpdate(
