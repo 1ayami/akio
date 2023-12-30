@@ -13,7 +13,7 @@ module.exports = {
 		const general = member.guild.channels.cache.find(
 			(c) => c.name == '・💬・general'
 		)
-		const inicio = member.guild.channnels.cache.find(
+		const inicio = member.guild.channels.cache.find(
 			(c) => c.name == '・🌌・inicio'
 		)
 		// Embed de bienvenida
