@@ -21,7 +21,9 @@ module.exports = {
 			)
 			.setImage('https://i.imgur.com/N1r89gK.jpeg')
 
-		const canal = member.guild.channels.cache.get('1186504848565354516')
+		const canal = member.guild.channels.cache.find(
+			(c) => c.name == '・💬・general'
+		)
 
 		canal.send({ content: `${member}`, embeds: [embedWLC] })
 
